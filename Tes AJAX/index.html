@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App</title>
+    <style>
+        .weather-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            width: 300px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body style="text-align: center;font-family: Verdana, Geneva, Tahoma, sans-serif;">
+    <h1>Weather Saiki Mazeh</h1>
+    
+    <label for="city">Enter City:</label>
+    <input type="text" id="city" placeholder="City">
+    <button onclick="getWeather()">Get Weather</button>
+
+    <div id="weather-data">
+        <!-- Weather data will be displayed here -->
+    </div>
+
+    <script>
+        function getWeather() {
+            const apiKey = '8a6491ef9a6f4676aea40210230310'; // Replace with your WeatherAPI.com API key
+            const city = document.getElementById('city').value;
+            const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const weatherData = `
+                        <div class="weather-card" style="border-left-color: red; border-left-width: 5px; border-radius: 5%;">
+                            <h2>Location</h2>
+                            <p>${data.location.name}, ${data.location.country}</p>
+                        </div>
+                        <div class="weather-card" style="border-left-color: red; border-left-width: 5px; border-radius: 5%;">
+                            <h2>Temperature</h2>
+                            <p>${data.current.temp_c}°C</p>
+                        </div>
+                        <div class="weather-card" style="border-left-color: red; border-left-width: 5px; border-radius: 5%;">
+                            <h2>Weather</h2>
+                            <p>${data.current.condition.text}</p>
+                        </div>
+                        <div class="weather-card" style="border-left-color: red; border-left-width: 5px; border-radius: 5%;">
+                            <h2>Humidity</h2>
+                            <p>${data.current.humidity}%</p>
+                        </div>
+                        <div class="weather-card" style="border-left-color: red; border-left-width: 5px; border-radius: 5%;">
+                            <h2>Wind Speed</h2>
+                            <p>${data.current.wind_kph} km/h</p>
+                        </div>
+                        <div class="weather-card" style="border-left-color: red; border-left-width: 5px; border-radius: 5%;">
+                            <h2>Pressure</h2>
+                            <p>${data.current.pressure_mb} mb</p>
+                        </div>
+                        <div class="weather-card" style="border-left-color: red; border-left-width: 5px; border-radius: 5%;">
+                            <h2>Visibility</h2>
+                            <p>${data.current.vis_km} km</p>
+                        </div>
+                        <div class="weather-card" style="border-left-color: red; border-left-width: 5px; border-radius: 5%;">
+                            <h2>Cloud Cover</h2>
+                            <p>${data.current.cloud}%</p>
+                        </div>
+                    `;
+
+                    document.getElementById('weather-data').innerHTML = weatherData;
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
+                    document.getElementById('weather-data').innerHTML = 'Unable to fetch weather data.';
+                });
+        }
+    </script>
+</body>
+</html>
